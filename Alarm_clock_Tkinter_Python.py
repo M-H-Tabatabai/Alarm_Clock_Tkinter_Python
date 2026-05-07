@@ -10,18 +10,32 @@ root.resizable(width=False, height=False)
 time_label = ttk.Label(root, text="12:30:30", font=("Times New Roman", 20))
 time_label.place(relx=0.44, rely=0.05, anchor="w")
 
+
 def get_current_time():
     current_time = datetime.now()
     time_label.configure(text=current_time.strftime("%H:%M:%S"))
+    compare_alarm_with_current_time(current_time)
     root.after(1000, get_current_time)
+
 
 def set_alarm():
     global alarm_time
     current_time = datetime.now()
-    alarm_time = current_time.replace(hour=int(hour_alarm_entry.get()), minute=int(
-        minute_alarm_entry.get()), second=0, microsecond=0)
+    alarm_time = current_time.replace(
+        hour=int(hour_alarm_entry.get()),
+        minute=int(minute_alarm_entry.get()),
+        second=0,
+        microsecond=0,
+    )
     latest_alarm_label.configure(text=alarm_time.strftime("%H:%M:%S"))
 
+
+def compare_alarm_with_current_time(current_time):
+    global alarm_time
+    if alarm_time is not None and current_time >= alarm_time:
+        messagebox.showinfo("showinfo", "Your alarm has happened")
+        latest_alarm_label.configure(text="No alarm has been set")
+        alarm_time = None
 
 
 # Center the window on the screen
@@ -54,7 +68,7 @@ minute_alarm_entry.place(relx=0.5, rely=0.55, anchor="center")
 label_minute = ttk.Label(root, text="minute", font=("Times New Roman", 20))
 label_minute.place(relx=0.1, rely=0.55, anchor="w")
 
-latest_alarm_label = tk.Label(root, text='No alarm has been set')
+latest_alarm_label = tk.Label(root, text="No alarm has been set")
 latest_alarm_label.place(relx=0.75, rely=0.65, anchor="center")
 
 # button set alarm
