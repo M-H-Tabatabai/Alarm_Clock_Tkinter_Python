@@ -1,4 +1,3 @@
-:::writing
 # ⏰ Alarm Clock App (Python Tkinter)
 
 A simple and elegant **Alarm Clock Desktop Application** built with **Python** and **Tkinter**.  
@@ -120,9 +119,13 @@ Possible upgrades for the project:
 
 ---
 
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
 ## 👨‍💻 Author
 
-Developed as a **Python GUI learning project** using Tkinter.
+mohammad hossein
 
 If you like this project ⭐ consider starring the repository!
 
