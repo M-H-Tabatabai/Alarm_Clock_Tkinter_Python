@@ -7,6 +7,7 @@ root = tk.Tk()
 root.title("Alarm Clock App")
 root.resizable(width=False, height=False)
 
+alarms = []
 
 time_label = ttk.Label(root, text="12:30:30", font=("Times New Roman", 20))
 time_label.place(relx=0.44, rely=0.05, anchor="w")
@@ -15,29 +16,47 @@ time_label.place(relx=0.44, rely=0.05, anchor="w")
 def get_current_time():
     current_time = datetime.now()
     time_label.configure(text=current_time.strftime("%H:%M:%S"))
-    compare_alarm_with_current_time(current_time)
+    check_alarms(current_time)
     root.after(1000, get_current_time)
 
 
 def set_alarm():
-    global alarm_time
-    current_time = datetime.now()
-    alarm_time = current_time.replace(
-        hour=int(hour_alarm_entry.get()),
-        minute=int(minute_alarm_entry.get()),
-        second=0,
-        microsecond=0,
-    )
-    alarm_label = tk.Label(alarm_box, text=alarm_time.strftime("%H:%M:%S"), bg="#ee1414",
-                               font=("Times New Roman", 14))
-    alarm_label.pack()  # قرار گرفتن زیر قبلی
+    try:
+        hour = int(hour_alarm_entry.get())
+        minute = int(minute_alarm_entry.get())
 
-def compare_alarm_with_current_time(current_time):
-    global alarm_time
-    if alarm_time is not None and current_time >= alarm_time:
-        messagebox.showinfo("showinfo", "Your alarm has happened")
-        alarm_time = None
+        now = datetime.now()
+        new_alarm_time = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
 
+        # لیبل برای نمایش در باکس
+        alarm_label = tk.Label(alarm_box, text=new_alarm_time.strftime("%H:%M:%S"),
+                               bg="#d0ffd0", font=("Times New Roman", 14))
+        alarm_label.pack(pady=5)
+
+        # ذخیره هشدار
+        alarms.append({
+            "time": new_alarm_time,
+            "label": alarm_label
+        })
+
+    except ValueError:
+        messagebox.showerror("Error", "Invalid time format")
+
+
+
+def check_alarms(current_time):
+    to_remove = []
+
+    for alarm in alarms:
+        alarm_time = alarm["time"]
+        if current_time >= alarm_time:
+            messagebox.showinfo("Alarm", f"Alarm for {alarm_time.strftime('%H:%M:%S')} triggered!")
+            alarm["label"].destroy()  # حذف لیبل از UI
+            to_remove.append(alarm)
+
+    # حذف هشدارهایی که اتفاق افتاده‌اند
+    for alarm in to_remove:
+        alarms.remove(alarm)
 
 # Center the window on the screen
 window_width = 800
@@ -68,9 +87,6 @@ minute_alarm_entry = ttk.Entry(root, width=20)
 minute_alarm_entry.place(relx=0.5, rely=0.55, anchor="center")
 label_minute = ttk.Label(root, text="minute", font=("Times New Roman", 20))
 label_minute.place(relx=0.1, rely=0.55, anchor="w")
-
-# latest_alarm_label = tk.Label(root, text="No alarm has been set")
-# latest_alarm_label.place(relx=0.75, rely=0.65, anchor="center")
 
 # button set alarm
 btn_calc = ttk.Button(root, text="Set Alarm", command=set_alarm)
