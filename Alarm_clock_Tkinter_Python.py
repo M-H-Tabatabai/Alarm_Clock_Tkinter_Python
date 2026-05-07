@@ -9,11 +9,6 @@ root.resizable(width=False, height=False)
 
 alarms = []
 
-# Label that shows the current time
-time_label = ttk.Label(root, text="12:30:30", font=("Times New Roman", 20))
-time_label.place(relx=0.44, rely=0.05, anchor="w")
-
-
 def get_current_time():
     # Get the current system time
     current_time = datetime.now()
@@ -105,11 +100,17 @@ label_minute = ttk.Label(root, text="minute", font=("Times New Roman", 20))
 label_minute.place(relx=0.1, rely=0.55, anchor="w")
 
 # Button to set alarm
-btn_calc = ttk.Button(root, text="Set Alarm", command=set_alarm)
+style = ttk.Style()
+style.configure("set.TButton", foreground="green")
+
+
+btn_calc = ttk.Button(root, text="Set Alarm", command=set_alarm, style="set.TButton", cursor="hand2")
 btn_calc.place(relx=0.5, rely=0.65, anchor="center")
 
 # Button to exit the app
-btn_close = ttk.Button(root, text="Exit", command=root.destroy)
+style = ttk.Style()
+style.configure("Danger.TButton", foreground="red")
+btn_close = ttk.Button(root, text="Exit", command=root.destroy, style="Danger.TButton", cursor="hand2")
 btn_close.place(relx=0.5, rely=0.9, anchor="center")
 
 # Frame that holds the list of alarms
