@@ -9,6 +9,7 @@ root.resizable(width=False, height=False)
 
 alarms = []
 
+
 def get_current_time():
     # Get the current system time
     current_time = datetime.now()
@@ -32,15 +33,16 @@ def set_alarm():
         new_alarm_time = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
 
         # Create a label to show the alarm in the list
-        alarm_label = tk.Label(alarm_box, text=new_alarm_time.strftime("%H:%M:%S"),
-                               bg="#d0ffd0", font=("Times New Roman", 14))
+        alarm_label = tk.Label(
+            alarm_box,
+            text=new_alarm_time.strftime("%H:%M:%S"),
+            bg="#d0ffd0",
+            font=("Times New Roman", 14),
+        )
         alarm_label.pack(pady=5)
 
         # Save alarm data
-        alarms.append({
-            "time": new_alarm_time,
-            "label": alarm_label
-        })
+        alarms.append({"time": new_alarm_time, "label": alarm_label})
 
     except ValueError:
         # Show error if input is not valid
@@ -55,7 +57,9 @@ def check_alarms(current_time):
         alarm_time = alarm["time"]
         if current_time >= alarm_time:
             # Show alarm popup
-            messagebox.showinfo("Alarm", f"Alarm for {alarm_time.strftime('%H:%M:%S')} triggered!")
+            messagebox.showinfo(
+                "Alarm", f"Alarm for {alarm_time.strftime('%H:%M:%S')} triggered!"
+            )
 
             # Remove alarm label from UI
             alarm["label"].destroy()
@@ -104,13 +108,17 @@ style = ttk.Style()
 style.configure("set.TButton", foreground="green")
 
 
-btn_calc = ttk.Button(root, text="Set Alarm", command=set_alarm, style="set.TButton", cursor="hand2")
+btn_calc = ttk.Button(
+    root, text="Set Alarm", command=set_alarm, style="set.TButton", cursor="hand2"
+)
 btn_calc.place(relx=0.5, rely=0.65, anchor="center")
 
 # Button to exit the app
 style = ttk.Style()
 style.configure("Danger.TButton", foreground="red")
-btn_close = ttk.Button(root, text="Exit", command=root.destroy, style="Danger.TButton", cursor="hand2")
+btn_close = ttk.Button(
+    root, text="Exit", command=root.destroy, style="Danger.TButton", cursor="hand2"
+)
 btn_close.place(relx=0.5, rely=0.9, anchor="center")
 
 # Frame that holds the list of alarms
