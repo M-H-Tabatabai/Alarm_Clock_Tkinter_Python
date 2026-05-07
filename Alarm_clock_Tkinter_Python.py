@@ -7,6 +7,7 @@ root = tk.Tk()
 root.title("Alarm Clock App")
 root.resizable(width=False, height=False)
 
+
 time_label = ttk.Label(root, text="12:30:30", font=("Times New Roman", 20))
 time_label.place(relx=0.44, rely=0.05, anchor="w")
 
@@ -27,14 +28,14 @@ def set_alarm():
         second=0,
         microsecond=0,
     )
-    latest_alarm_label.configure(text=alarm_time.strftime("%H:%M:%S"))
-
+    alarm_label = tk.Label(alarm_box, text=alarm_time.strftime("%H:%M:%S"), bg="#ee1414",
+                               font=("Times New Roman", 14))
+    alarm_label.pack()  # قرار گرفتن زیر قبلی
 
 def compare_alarm_with_current_time(current_time):
     global alarm_time
     if alarm_time is not None and current_time >= alarm_time:
         messagebox.showinfo("showinfo", "Your alarm has happened")
-        latest_alarm_label.configure(text="No alarm has been set")
         alarm_time = None
 
 
@@ -68,8 +69,8 @@ minute_alarm_entry.place(relx=0.5, rely=0.55, anchor="center")
 label_minute = ttk.Label(root, text="minute", font=("Times New Roman", 20))
 label_minute.place(relx=0.1, rely=0.55, anchor="w")
 
-latest_alarm_label = tk.Label(root, text="No alarm has been set")
-latest_alarm_label.place(relx=0.75, rely=0.65, anchor="center")
+# latest_alarm_label = tk.Label(root, text="No alarm has been set")
+# latest_alarm_label.place(relx=0.75, rely=0.65, anchor="center")
 
 # button set alarm
 btn_calc = ttk.Button(root, text="Set Alarm", command=set_alarm)
@@ -78,6 +79,12 @@ btn_calc.place(relx=0.5, rely=0.65, anchor="center")
 # Exit Button
 btn_close = ttk.Button(root, text="Exit", command=root.destroy)
 btn_close.place(relx=0.5, rely=0.9, anchor="center")
+
+
+alarm_box = tk.Frame(root, width=200, height=500)
+alarm_box.place(relx=0.85, rely=0.5, anchor="center")
+
+current_alarms = []
 
 get_current_time()
 root.mainloop()
